@@ -1,0 +1,353 @@
+---
+params:
+  section: "abc"
+  pg: "abc"
+  var: "abc"
+title: "`r paste0(params$section,': ',params$pg)`"
+output: 
+ html_document: 
+   self_contained: no
+   mathjax: null
+   highlight: null
+   fig_width: 10
+   theme: null
+   template: "../../CCO_template_html.html"
+---
+
+```{r, include=F}
+knitr::opts_chunk$set(echo = F, warning=F,message = F) # stop code/messages getting printed
+```
+
+<link rel="stylesheet" href="../../styles.css" type="text/css" />
+
+```{r, child='W:/CCO-WORKING-FS/Projects/big ask survey/analysis/markdown/child docs/navigation_child_doc.rmd'}
+
+# pull in navigation links
+
+```
+
+<script src="extra_js.js"></script>
+
+```{r, results='asis'}
+
+# create picker control to switch between tables
+
+if(seg){
+
+  suffix<-"_seg"
+}else{
+  suffix<-""
+}
+
+cat(
+  paste0('
+   <div class="picker-group">
+<label>Select characteristic</label>
+<select id="area_picker',suffix,'">
+<option value="urban',suffix,'">Urban/rural</option>
+<option value="idaci',suffix,'">Income deprivation affecting children (deciles)</option>
+<option value="idaci_v',suffix,'">Income deprivation affecting children (vigintiles)</option>
+<option value="covid',suffix,'">Cumulative LA COVID case rate</option>
+<option value="learn_loss',suffix,'">LA rates of missed face to face teaching up to Dec 2020</option>
+<option value="crime_all',suffix,'">Crime rates in an area</option>
+<option value="obese',suffix,'">LA Child obesity rates (Yr 6 pupils)</option>
+</select>
+<button class="picker_button" onclick="picker_f(',"'",'area_picker',suffix,"'",",'area",suffix,"'",')">Go</button>
+</div> 
+  ')
+)
+```
+
+
+*Please select area characteristic of interest and press Go. Note: all characteristics are based on respondents' LSOA of residence with the exception of estimated days of missed face-to-face teaching estimates and child obesity rates which are LA level*
+
+```{r, results='asis'}
+
+##### Urban/rural #####
+
+# Create html div to hold table - this is what's shown/hidden by the picker control
+
+  cat(
+    paste0('<div id="urban',suffix,'" class="sect area',suffix,'">\n'
+             )
+  )
+
+
+```
+
+```{r}
+
+df_urb<-table_f("ru11ind")[,urb:=ifelse(grepl("[A-C]",ru11ind),"Urban","Rural")
+                           ][!is.na(value)] # reshape data to be in correct format
+
+two_way_tb_f(df_urb,"urb","Rural vs Urban",col1) # create table
+
+
+
+```
+
+```{r, results='asis'}
+cat("\nSource: ONS postcode lookup file\n")
+```
+
+
+</div>
+
+
+```{r, results='asis'}
+
+##### IDACI #####
+
+# Create html div to hold table - this is what's shown/hidden by the picker control
+
+  cat(
+    paste0('<div id="idaci',suffix,'" class="sect area',suffix,'">\n'
+             )
+  )
+
+
+```
+
+```{r}
+
+if(!"idacidecile" %in% names(df)){
+
+  # Where not already merged on add in imd information
+  
+df<- left_join(df, imd, by= c("lsoa11"="FeatureCode"))
+}
+
+#df<-merge(df,imd[ ,.(idacidecile=Value,FeatureCode)],
+            # by.x="lsoa11",by.y="FeatureCode",all.x=T)
+
+df_idaci<-table_f("idacidecile")[!is.na(idacidecile) & !is.na(value) # reshape data
+                                  ]
+
+two_way_tb_f(df_idaci,"idacidecile","Highest vs lowest",col1,
+             mult_cols=T,test_vals=c(1,10),
+             columnGroups = list(colGroup(name="IDACI decile (1 = most deprived)",as.character(c(1:10))))
+             ) # create table - comparison is between 1st and 10th decile
+
+
+
+```
+
+```{r, results='asis'}
+cat("\nSource: MHCLG Indices of mulitple deprivation 2019\n")
+
+```
+
+</div>
+
+```{r, results='asis'}
+
+# Create html div to hold table - this is what's shown/hidden by the picker control
+
+  cat(
+    paste0('<div id="idaci_v',suffix,'" class="sect area',suffix,'">\n'
+             )
+  )
+
+#<div id="idaci_v" class="sect area"> - in white box below
+```
+
+
+
+
+```{r, results='asis'}
+
+df_idaciv<-table_f("idacivigintile")[!is.na(idacivigintile) & !is.na(value) # reshape data
+                                  ]
+
+two_way_tb_f(df_idaciv,"idacivigintile","Highest vs lowest",col1,
+             mult_cols=T,test_vals=c(1,20),
+             columnGroups = list(colGroup(name="IDACI vigintile (1 = most deprived)",as.character(c(1:20))))
+             ) # create table - comparison is between 1st and 20th vigintile
+
+
+ 
+
+```
+
+
+```{r, results='asis'}
+
+cat("\nSource: MHCLG Indices of mulitple deprivation 2019\n")
+
+```
+
+</div>
+
+
+```{r, results='asis'}
+# Create html div to hold table - this is what's shown/hidden by the picker control
+
+  cat(
+    paste0('<div id="covid',suffix,'" class="sect area',suffix,'">\n'
+             )
+  )
+
+
+```
+
+```{r}
+
+if(! "covid_quintile" %in% names(df)){
+
+  # where not already add in LA covid quintiles
+  
+  covid<-fread("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/aux data/covidCaseRate_1205.csv")
+
+covid<-covid[,perc_rank:=frank(caseRate)/.N
+             ][,covid_quintile:=ceiling(perc_rank/0.2)]
+
+df<-merge(df,covid,by.y="areaCode",by.x="UTLA19CD",all.x=T)
+
+}
+
+df_age<-table_f("covid_quintile",df_use=df)[!is.na(covid_quintile) & !is.na(value)] # reshape data
+
+
+two_way_tb_f(df_age,"covid_quintile","Highest quintle vs lowest",col1,mult_cols=T,test_vals=c(1,5),
+             columnGroups = list(colGroup(name="Cumulative COVID case rate quintile (5= highest rate)",as.character(c(1:5))))
+             ) # create table - comparison is between 1st and 5th quintile
+
+
+```
+
+```{r, results='asis'}
+cat("\nSource: https://coronavirus.data.gov.uk/ data up to 11/05/2021\n")
+
+```
+
+</div>
+
+```{r, results='asis'}
+
+# Create html div to hold table - this is what's shown/hidden by the picker control
+
+  cat(
+    paste0('<div id="learn_loss',suffix,'" class="sect area',suffix,'">\n'
+             )
+  )
+
+
+```
+
+```{r}
+
+if(!"loss10" %in% names(df)){
+
+  # Where not already there add in learning loss estimates
+  
+  la_loss<-fread("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/aux data/la_learningLoss.csv")
+
+la_loss<-la_loss[Phase=="All state-funded schools",.(UTLA19CD=`Local Authority Code`,loss_rate=`Days of classroom learning missed per pupil (9th September to 10th December)`)
+                 ][,loss10:=ceiling((frank(loss_rate)/.N)/0.2)]
+
+df<-merge(df,la_loss,by="UTLA19CD",all.x=T)
+}
+
+df_age<-table_f("loss10")[!is.na(loss10) & !is.na(value)] # reshape data
+
+two_way_tb_f(df_age,"loss10","Highest quintle vs lowest",col1,mult_cols=T,test_vals=c(1,5),
+             columnGroups = list(colGroup(name="Learning lost per pupil quintile (5= highest rate)",as.character(c(1:5))))
+             ) # create table - comparison is between 1st and 5th quintile
+             
+
+```
+
+```{r, results='asis'}
+cat("\nSource: CCO estimates of missed face to face learning to December 2020\n")
+
+```
+
+</div>
+
+```{r, results='asis'}
+
+# Create html div to hold table - this is what's shown/hidden by the picker control
+
+  cat(
+    paste0('<div id="obese',suffix,'" class="sect area',suffix,'">\n'
+             )
+  )
+
+
+```
+
+```{r}
+
+if(!"obese_rate" %in% names(df)){
+  
+  # Where not already present add in LA child obesity rates
+  
+obese<-fread("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/aux data/obesity.csv")
+
+obese<-obese[,.(UTLA19CD=`Area Code`,obese_rate)
+                 ][,obese_rate:=ceiling((frank(obese_rate)/.N)/0.2)]
+
+df<-merge(df,obese,by="UTLA19CD",all.x=T)
+}
+
+df_age<-table_f("obese_rate",df[!is.na(obese_rate)])[!is.na(value)] # reshape data
+
+two_way_tb_f(df_age,"obese_rate","Highest quintle vs lowest",col1,mult_cols=T,test_vals=c(1,5),
+             columnGroups = list(colGroup(name="LA child obesity rate quintile (Yr 6 children, 5= highest rate)",as.character(c(1:5))))
+             ) # create table - comparison is between 1st and 5th quintile
+
+
+```
+
+```{r, results='asis'}
+cat("\nSource: NHS National Child Measurement Programme statistics 2020\n")            
+
+```
+
+</div>
+
+```{r, results='asis'}
+
+# Create HTML div - this is whats shown/hidden
+
+  cat(
+    paste0('<div id="crime_all',suffix,'" class="sect area',suffix,'">\n'
+             )
+  )
+
+
+```
+
+```{r}
+
+if(! "all_crime" %in% names(df)){
+  
+  # Where not already present add in LSOA crime rates
+  
+crime<-fread("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/aux data/lsoa_crime_quantile.csv")
+
+names(crime)[2]<-"all_crime"
+
+df<-merge(df,crime,
+             by="lsoa11",all.x=T)
+
+}
+
+df_idaci<-table_f("all_crime")[!is.na(all_crime) & !is.na(value)
+                                  ] # reshape data
+
+two_way_tb_f(df_idaci,"all_crime","Highest quintile vs lowest",col1,
+             mult_cols=T,test_vals=c(1,5),
+             columnGroups = list(colGroup(name="Crime rate quintile (5 = highest rate)",as.character(c(1:5))))
+             ) # create table - comparison is between 1st and 5th quintile
+
+
+```
+
+```{r, results='asis'}
+cat("\nSource: Police.uk recorded crime open data 2020/21\n")    
+
+```
+
+</div>
+
