@@ -96,55 +96,23 @@ q_lookup_worry<-q_lookup_worry[!grepl("dont want",var)]
 
 <script src="extra_js.js"></script>
 
-<h3>Key stats</h3>
-<div class="stat-boxes">
-
-<div class="col-xs-12 col-sm-6 col-lg-3">
-<div class="stat">
-<div class="stat-box-outer">
-<div class="stat-box-inner">
-<p class="figure">Key stat</p>
-</div>
-</div>
-</div>
-</div>
-
-<div class="col-xs-12 col-sm-6 col-lg-3">
-<div class="stat">
-<div class="stat-box-outer">
-<div class="stat-box-inner">
-<p class="figure">Key stat</p>
-</div>
-</div>
-</div>
-</div>
-
-<div class="col-xs-12 col-sm-6 col-lg-3">
-<div class="stat">
-<div class="stat-box-outer">
-<div class="stat-box-inner">
-<p class="figure">Key stat</p>
-</div>
-</div>
-</div>
-</div>
-
-<div class="col-xs-12 col-sm-6 col-lg-3">
-<div class="stat">
-<div class="stat-box-outer">
-<div class="stat-box-inner">
-<p class="figure">Key stat</p>
-</div>
-</div>
-</div>
-</div>
-
-</div>
-
 
 <h3> About this data</h3>
 
-INTRO TEXT
+Children aged 9-17 were asked: “When you grow up, how likely do you think it is that you will have a better life than your parents?” 
+
+The options to choose from were:
+
+* Very likely
+* Fairly likely
+* Neither likely nor unlikely
+* Fairly unlikely
+* Very unlikely
+
+
+The chart below shows what proportion of children chose each option, but with ‘Very likely’ and ‘Fairly likely’ combined into ‘Likely’, and ‘Very unlikely’ and ‘Fairly unlikely’ combined into ‘Unlikely’.
+
+<br/>
 
 <h3>Do children think it is likely they will have a better life than their parents?</h3>
 

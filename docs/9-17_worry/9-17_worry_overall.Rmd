@@ -110,58 +110,35 @@ q_lookup_clust<-fread("W:\\CCO-WORKING-FS\\Projects\\big ask survey\\analysis\\a
 
 <script src="extra_js.js"></script>
 
-<h3>Key stats
-<div class="stat-boxes">
 
-<div class="col-xs-12 col-sm-6 col-lg-3">
-<div class="stat">
-<div class="stat-box-outer">
-<div class="stat-box-inner">
-<p class="figure">Key stat</p>
-</div>
-</div>
-</div>
-</div>
+<h3>About this data</h3>
 
-<div class="col-xs-12 col-sm-6 col-lg-3">
-<div class="stat">
-<div class="stat-box-outer">
-<div class="stat-box-inner">
-<p class="figure">Key stat</p>
-</div>
-</div>
-</div>
-</div>
+Children aged 9-17 were asked: “When you grow up, which things, if any, are you most worried that you won’t have? Choose up to 5 things from the list below.” 
+ 
+The options to choose from were:
 
-<div class="col-xs-12 col-sm-6 col-lg-3">
-<div class="stat">
-<div class="stat-box-outer">
-<div class="stat-box-inner">
-<p class="figure">Key stat</p>
-</div>
-</div>
-</div>
-</div>
+* Having a good education
+* Good friends
+* A good job or career
+* Enough money to buy the things I need
+* Getting on well with my current family
+* Starting my own family
+* A nice home to live in
+* Good mental health
+* Good physical health
+* Being part of a good local community
+* Living in a nice area with things to do
+* Everyone being treated fairly
+* A healthy environment and planet
 
-<div class="col-xs-12 col-sm-6 col-lg-3">
-<div class="stat">
-<div class="stat-box-outer">
-<div class="stat-box-inner">
-<p class="figure">Key stat</p>
-</div>
-</div>
-</div>
-</div>
 
-</div>
+The chart below shows what proportion of children chose each option. 
 
-<div class="row"></div>
-
-<h3>About this data
-
-INTRO TEXT
+<br/>
 
 <h3>What are children worried about for their future?</h3>
+
+*Note children can select more than one option*
 
 ```{r}
 dat<-table_f("")[!grepl("dont",variable)][,.(c=sum(wt)),by=.(variable,value)][,perc:=round(c/sum(c),2)*100,by=.(variable)][value==1 & !grepl("Other",variable)][,.(variable,perc)]

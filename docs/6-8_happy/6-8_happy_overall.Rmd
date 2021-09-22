@@ -92,55 +92,25 @@ age_grp<-"6-8"
 
 <script src="extra_js.js"></script>
 
-
-<h3>Key stats</h3>
-<div class="stat-boxes">
-
-<div class="col-xs-12 col-sm-6 col-lg-3">
-<div class="stat">
-<div class="stat-box-outer">
-<div class="stat-box-inner">
-<p class="figure">Key stat</p>
-</div>
-</div>
-</div>
-</div>
-
-<div class="col-xs-12 col-sm-6 col-lg-3">
-<div class="stat">
-<div class="stat-box-outer">
-<div class="stat-box-inner">
-<p class="figure">Key stat</p>
-</div>
-</div>
-</div>
-</div>
-
-<div class="col-xs-12 col-sm-6 col-lg-3">
-<div class="stat">
-<div class="stat-box-outer">
-<div class="stat-box-inner">
-<p class="figure">Key stat</p>
-</div>
-</div>
-</div>
-</div>
-
-<div class="col-xs-12 col-sm-6 col-lg-3">
-<div class="stat">
-<div class="stat-box-outer">
-<div class="stat-box-inner">
-<p class="figure">Key stat</p>
-</div>
-</div>
-</div>
-</div>
-
-</div>
-
 <h3>About this data</h3>
 
-INTRO TEXT
+We asked children aged 6-8 two questions about how happy they are.
+
+The first question was: “Choose up to three words that describe how you feel most of the time.” The chart below shows the overall results. 
+
+The second question was more similar to the question asked of 9-17 year olds. Children aged 9-17 were asked “How happy are you with these things in your life?”, and were given a list of items to assess with the response options ‘Sad’, ‘Neither happy nor sad’, or ‘Happy’. The list of items was:
+
+* My friendships
+* My education
+* How much I can play
+* The places I can go to have fun
+* My family life
+* My family’s health
+* My life overall
+
+In the chart for this question, the red bars show the proportion of children who said they were sad, while the green bars show the proportion of children who said they were happy. The amber bars show the proportion of children who were neutral – neither happy nor sad.
+
+<br/>
 
 <h3>How do children report feeling most of the time?</h3>
 

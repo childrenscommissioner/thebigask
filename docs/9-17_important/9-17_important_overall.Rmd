@@ -113,63 +113,36 @@ q_lookup_clust<-fread("W:\\CCO-WORKING-FS\\Projects\\big ask survey\\analysis\\a
 
 <script src="extra_js.js"></script>
 
-<h3>Key stats</h3>
-<div class="stat-boxes">
-
-<div class="col-xs-12 col-sm-6 col-lg-3">
-<div class="stat">
-<div class="stat-box-outer">
-<div class="stat-box-inner">
-<p class="figure">Key stat</p>
-</div>
-</div>
-</div>
-</div>
-
-<div class="col-xs-12 col-sm-6 col-lg-3">
-<div class="stat">
-<div class="stat-box-outer">
-<div class="stat-box-inner">
-<p class="figure">Key stat</p>
-</div>
-</div>
-</div>
-</div>
-
-<div class="col-xs-12 col-sm-6 col-lg-3">
-<div class="stat">
-<div class="stat-box-outer">
-<div class="stat-box-inner">
-<p class="figure">Key stat</p>
-</div>
-</div>
-</div>
-</div>
-
-<div class="col-xs-12 col-sm-6 col-lg-3">
-<div class="stat">
-<div class="stat-box-outer">
-<div class="stat-box-inner">
-<p class="figure">Key stat</p>
-</div>
-</div>
-</div>
-</div>
-
-</div>
-
-<div class="row"></div>
-
-
 
 <h3>About this data</h3>
 
-*Children were asked to select up to 5 items from the items below that they felt were most important for them to have a good life when they grow up. The percentages in the chart below represent the proportion selecting each item.*
+Children aged 9-17 were asked: “When you grow up, which things, if any, do you think will be most important for you to have a good life? Choose up to 5 things from the list below.” 
+
+The options to choose from were:
+
+* Having a good education
+* Good friends
+* A good job or career
+* Enough money to buy the things I need
+* Getting on well with my current family
+* Starting my own family
+* A nice home to live in
+* Good mental health
+* Good physical health
+* Being part of a good local community
+* Living in a nice area with things to do
+* Everyone being treated fairly
+* A healthy environment and planet
+
+
+The chart below shows what proportion of children chose each option. 
+
+<br/>
 
 
 <h3>What do children think is important for their future?</h3>
 
-
+*Note children can select more than one option*
 
 ```{r}
 # Same plot function as 9-17_happiness overall
