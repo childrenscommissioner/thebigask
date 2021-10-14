@@ -165,7 +165,8 @@ ethnicity_table %>%
 dethnicity_table <- fread("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/aux data/perc happy/phappy_dethnicity.csv")
 
 kable(dethnicity_table) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
+  scroll_box(width = "100%")
 
 dethnicity_table %>%
   download_this(
@@ -189,7 +190,8 @@ dethnicity_table %>%
 idaci_table <- fread("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/aux data/perc happy/phappy_idaci.csv")
 
 kable(idaci_table) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) %>% 
+  scroll_box(width = "100%")
 
 idaci_table %>%
   download_this(
@@ -212,7 +214,7 @@ idaci_table %>%
 caresw_table <- fread("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/aux data/perc happy/phappy_caresw.csv")
 
 kable(caresw_table) %>%
-  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive")) 
 
 caresw_table %>%
   download_this(
