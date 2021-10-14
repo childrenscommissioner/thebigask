@@ -68,6 +68,25 @@ pal<-RColorBrewer::brewer.pal(7,"Reds")
 
 df<-readRDS("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/survey data/final data/9-17_weighted.rds")
 
+# liverpool <- df %>% filter(la_use %in% c("Liverpool"))
+
+# manchester <- df %>% filter(la_use %in% c("Manchester", "Bolton", "Bury", "Oldham", "Rochdale", "Salford","Stockport","Tameside","Trafford","Wigan"))
+                                          
+# #                                           
+# # newcastle <- df %>% filter(la_use %in% c("Newcastle upon Tyne")) 
+# # bristol <- df %>% filter(la_use %in% c("Bristol, City of")) 
+# # yorkshire <- df %>% filter(la_use %in% c("Barnsley", "Bradford", "Calderdale", "East Riding of Yorkshire", "Kingston upon Hull, City of",
+# #                                          "Kirklees", "Leeds", "North East Lincolnshire",
+# #                                          "North Lincolnshire", "North Yorkshire", "Rotherham","Sheffield","Wakefield", "York"))
+# #
+# # mancity <- df %>% filter(la_use %in% c("Manchester"))
+# # 
+# #
+
+# df <- manchester
+
+#df <- df %>% filter(care %in% c("Yes"))
+
 #imd<-fread(file="W:/CCO-WORKING-FS/Projects/big ask survey/analysis/aux data/imd2019lsoa.csv")[Measurement=="Decile"]
 
 imd<-fread(file="W:/CCO-WORKING-FS/Projects/big ask survey/analysis/aux data/idaci.csv")
@@ -127,5 +146,8 @@ ggplot(dat,
        aes(x=reorder(q4_parents_clean,perc),y=perc))+
   geom_col(fill="light blue",colour="grey20")+coord_flip()+geom_text(aes(label=paste0(perc,"%")),hjust=1)+
   theme_bw()+xlab("How likely ist it you will have\na better life than your parents?\n")+ylab("% of 9-17 yr olds")
+
+```
+```{r}
 
 ```
