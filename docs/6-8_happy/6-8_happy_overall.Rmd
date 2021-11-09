@@ -68,6 +68,18 @@ col1<-"% of children unhappy with..."
 
 df<-readRDS("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/survey data/final data/6-8_weighted.rds")
 
+# Rename Tom's care variable and create a new one inc. homes and independent
+
+df <- df %>% rename(care_tc = care)
+
+df <- df %>%  mutate(care = ifelse(
+  grepl("With foster parent|childrens home", df$dem_liveNow), "Yes", "No"))
+
+
+# filters - comment out when finished
+
+# df <- df %>%  filter(care %in% c("Yes"))
+
 
 #imd<-fread(file="W:/CCO-WORKING-FS/Projects/big ask survey/analysis/aux data/imd2019lsoa.csv")[Measurement=="Decile"]
 
@@ -98,7 +110,7 @@ We asked children aged 6-8 two questions about how happy they are.
 
 The first question was: “Choose up to three words that describe how you feel most of the time.” The chart below shows the overall results. 
 
-The second question was more similar to the question asked of 9-17 year olds. Children aged 9-17 were asked “How happy are you with these things in your life?”, and were given a list of items to assess with the response options ‘Sad’, ‘Neither happy nor sad’, or ‘Happy’. The list of items was:
+The second question was more similar to the question asked of 9-17 year olds. As with the older respondents, children aged 6-8 were asked “How happy are you with these things in your life?”, and were given a list of items to assess with the response options ‘Sad’, ‘Neither happy nor sad’, or ‘Happy’. The list of items for 6 to 8's was:
 
 * My friendships
 * My education

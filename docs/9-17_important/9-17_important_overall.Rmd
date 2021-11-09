@@ -16,7 +16,7 @@ output:
 
 ```{r setup, include=FALSE}
 
-# Code is the same as 9-17_happy overall file though readsa in different lookups for outcomes and segment names
+# Code is the same as 9-17_happy overall file though reads a in different lookups for outcomes and segment names
 
 knitr::opts_chunk$set(echo = F, warning=F,message = F)
 
@@ -39,6 +39,12 @@ dk_vals<-""
 col1<-"% of children that think x is important..."
 
 search_str<-"important_" # string to match outcomes in column names
+
+table <- function(x){
+  
+  x %>% write.table(file="clipboard", sep="\t", row.names=F)
+  
+}
 
 table_f<-function(x,df_use=df){ # table_f function redefined to account for differences between important and happiness question structure
   
@@ -69,6 +75,42 @@ source("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/scripts/markdown_func
 
 df<-readRDS("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/survey data/final data/9-17_weighted.rds")
 
+# new care marker inc. children's homes
+
+df <- df %>% rename(care_tc = care)
+
+df <- df %>%  mutate(care = ifelse(
+  grepl("With foster parent|childrens home|independent or semi", df$dem_liveNow), "Yes", "No"))
+
+df <- df %>%  mutate(
+  care_home = ifelse(dem_liveNow %in% c("A childrens home", "A secure childrens home"), "Yes", "No"),
+  care_foster = ifelse(dem_liveNow %in% c("With foster parent(s)"), "Yes", "No")
+)
+
+#df <- df %>% filter(care %in% c("Yes"))
+
+
+# filters for residential setting 
+#df <- df %>%  filter(care_foster %in% c("Yes"))
+
+#### SEND variable - inc. easy read
+
+df$send<-with(df,
+             ifelse(dfe_phase %in% "Special",
+                    "SEN",
+                    ifelse(`dem_support_A teaching assistant or SENCO at school` %in% "Yes","SEN",
+                           ifelse(grepl("easy",survey),"SEN","Not SEN"))))
+
+#df <- df %>% filter(send %in% c("SEN"))
+
+#### Young carers
+
+df<-df[,yc:=ifelse(`dem_support_A young carers project`=="Yes","Yes","No")]
+
+#df <- df %>% filter(yc %in% c("Yes"))
+
+
+
 # LA filtered files for analysis - ##### REMEMBER TO DELETE #####
 
 # liverpool <- df %>% filter(la_use %in% c("Liverpool"))
@@ -87,7 +129,7 @@ df<-readRDS("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/survey data/fina
 # df <-manchester
 
 
-#df <- df %>% filter(care %in% c("Yes"))
+#df <- df %>% filter(care_full %in% c("Yes"))
 
 #imd<-fread(file="W:/CCO-WORKING-FS/Projects/big ask survey/analysis/aux data/imd2019lsoa.csv")[Measurement=="Decile"]
 

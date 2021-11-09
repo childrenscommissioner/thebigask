@@ -37,6 +37,12 @@ target_vals<-c("Very unlikely","Unlikely","Fairly unlikely","Yes")
 
 col1<-"%"
 
+table <- function(x){
+  
+  x %>% write.table(file="clipboard", sep="\t", row.names=F)
+  
+}
+
 table_f<-function(x,df_use=df){
   
   x<-unlist(strsplit(x,"[|]"))
@@ -68,24 +74,55 @@ pal<-RColorBrewer::brewer.pal(7,"Reds")
 
 df<-readRDS("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/survey data/final data/9-17_weighted.rds")
 
-# liverpool <- df %>% filter(la_use %in% c("Liverpool"))
+# new care marker inc. children's homes & semi/independent accommodation
+
+
+df <- df %>% rename(care_tc = care)
+
+df <- df %>%  mutate(care = ifelse(
+  grepl("With foster parent|childrens home|independent or semi", df$dem_liveNow), "Yes", "No"))
+
+df <- df %>%  mutate(
+  care_home = ifelse(dem_liveNow %in% c("A childrens home", "A secure childrens home"), "Yes", "No"),
+  care_foster = ifelse(dem_liveNow %in% c("With foster parent(s)"), "Yes", "No")
+)
+
+#df <- df %>% filter(care %in% c("Yes"))
+
+
+# filters for residential setting 
+# df <- df %>%  filter(care_foster %in% c("Yes"))
+
+
+#### SEND variable - inc. easy read
+
+df$send<-with(df,
+             ifelse(dfe_phase %in% "Special",
+                    "Yes",
+                    ifelse(`dem_support_A teaching assistant or SENCO at school` %in% "Yes","SEN",
+                           ifelse(grepl("easy",survey),"Yes","No"))))
+
+#df <- df %>% filter(send %in% c("Yes"))
+
+#### Young carers
+
+df<-df[,yc:=ifelse(`dem_support_A young carers project`=="Yes","Yes","No")]
+
+#df <- df %>% filter(yc %in% c("Yes"))
+
+
+#### LA filters
 
 # manchester <- df %>% filter(la_use %in% c("Manchester", "Bolton", "Bury", "Oldham", "Rochdale", "Salford","Stockport","Tameside","Trafford","Wigan"))
                                           
-# #                                           
-# # newcastle <- df %>% filter(la_use %in% c("Newcastle upon Tyne")) 
-# # bristol <- df %>% filter(la_use %in% c("Bristol, City of")) 
 # # yorkshire <- df %>% filter(la_use %in% c("Barnsley", "Bradford", "Calderdale", "East Riding of Yorkshire", "Kingston upon Hull, City of",
 # #                                          "Kirklees", "Leeds", "North East Lincolnshire",
 # #                                          "North Lincolnshire", "North Yorkshire", "Rotherham","Sheffield","Wakefield", "York"))
-# #
-# # mancity <- df %>% filter(la_use %in% c("Manchester"))
-# # 
-# #
 
 # df <- manchester
 
-#df <- df %>% filter(care %in% c("Yes"))
+
+#### IDACI
 
 #imd<-fread(file="W:/CCO-WORKING-FS/Projects/big ask survey/analysis/aux data/imd2019lsoa.csv")[Measurement=="Decile"]
 
@@ -148,6 +185,8 @@ ggplot(dat,
   theme_bw()+xlab("How likely ist it you will have\na better life than your parents?\n")+ylab("% of 9-17 yr olds")
 
 ```
+
+
 ```{r}
 
 ```

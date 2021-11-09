@@ -65,22 +65,53 @@ source("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/scripts/markdown_func
 
 df<-readRDS("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/survey data/final data/9-17_weighted.rds")
 
-# LA filtered files for analysis - ##### REMEMBER TO DELETE #####
+# new care marker inc. children's homes
 
-# liverpool <- df %>% filter(la_use %in% c("Liverpool"))
+df <- df %>% rename(care_tc = care)
 
- # manchester <- df %>% filter(la_use %in% c("Manchester", "Bolton", "Bury", "Oldham", "Rochdale", "Salford","Stockport","Tameside",
- #                                           "Trafford", "Wigan"))
+df <- df %>%  mutate(care = ifelse(
+  grepl("With foster parent|childrens home|independent or semi", df$dem_liveNow), "Yes", "No"))
 
-# newcastle <- df %>% filter(la_use %in% c("Newcastle upon Tyne")) 
-# bristol <- df %>% filter(la_use %in% c("Bristol, City of")) 
-# yorkshire <- df %>% filter(la_use %in% c("Barnsley", "Bradford", "Calderdale", "East Riding of Yorkshire", "Kingston upon Hull, City of",
-#                                          "Kirklees", "Leeds", "North East Lincolnshire",
-#                                          "North Lincolnshire", "North Yorkshire", "Rotherham","Sheffield","Wakefield", "York"))
-# 
-#df <- manchester
+df <- df %>%  mutate(
+  care_home = ifelse(dem_liveNow %in% c("A childrens home", "A secure childrens home"), "Yes", "No"),
+  care_foster = ifelse(dem_liveNow %in% c("With foster parent(s)"), "Yes", "No")
+)
 
 #df <- df %>% filter(care %in% c("Yes"))
+
+
+# filters for residential setting
+#df <- df %>%  filter(care_home %in% c("Yes"))
+
+
+#### SEND variable - inc. easy read
+
+df$send<-with(df,
+             ifelse(dfe_phase %in% "Special",
+                    "Yes",
+                    ifelse(`dem_support_A teaching assistant or SENCO at school` %in% "Yes","SEN",
+                           ifelse(grepl("easy",survey),"Yes","No"))))
+
+#df <- df %>% filter(send %in% c("Yes"))
+
+#### Young carers
+
+df<-df[,yc:=ifelse(`dem_support_A young carers project`=="Yes","Yes","No")]
+
+#df <- df %>% filter(yc %in% c("Yes"))
+
+
+#### Filters for LA and other groups
+
+
+# manchester <- df %>% filter(la_use %in% c("Manchester", "Bolton", "Bury", "Oldham", "Rochdale", #"Salford","Stockport","Tameside","Trafford","Wigan"))
+                                        
+# # # yorkshire <- df %>% filter(la_use %in% c("Barnsley", "Bradford", "Calderdale", "East Riding of Yorkshire", "Kingston upon Hull, City of",
+# # #                                          "Kirklees", "Leeds", "North East Lincolnshire",
+# # #                                          "North Lincolnshire", "North Yorkshire", "Rotherham","Sheffield","Wakefield", "York"))
+
+#df <- manchester
+
 
 #imd<-fread(file="W:/CCO-WORKING-FS/Projects/big ask survey/analysis/aux data/imd2019lsoa.csv")[Measurement=="Decile"]
 

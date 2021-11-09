@@ -64,6 +64,19 @@ source("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/scripts/markdown_func
 
 df<-readRDS("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/survey data/final data/6-8_weighted.rds")
 
+# Rename Tom's care variable and create a new one inc. homes and independent
+
+df <- df %>% rename(care_tc = care)
+
+df <- df %>%  mutate(care = ifelse(
+  grepl("With foster parent|childrens home", df$dem_liveNow), "Yes", "No"))
+
+
+# filters - comment out when finished
+
+#df <- df %>%  filter(care %in% c("Yes"))
+
+# IDACI data
 
 #imd<-fread(file="W:/CCO-WORKING-FS/Projects/big ask survey/analysis/aux data/imd2019lsoa.csv")[Measurement=="Decile"]
 

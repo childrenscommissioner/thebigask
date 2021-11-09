@@ -232,7 +232,7 @@ caresw_table %>%
 
 ### Children in foster care only
 
-```{r care only, echo=FALSE}
+```{r foster care only, echo=FALSE}
 
 care_table <- fread("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/aux data/perc happy/phappy_care.csv")
 
@@ -251,6 +251,28 @@ care_table %>%
 
 ```
 
+<br/>
+
+### Children in residential care (children's homes) only
+
+```{r residential care only, echo=FALSE}
+
+rescare_table <- fread("W:/CCO-WORKING-FS/Projects/big ask survey/analysis/markdown/child docs/Copies for analysis/res_care_tb2.csv")
+
+kable(rescare_table) %>%
+  kable_styling(bootstrap_options = c("striped", "hover", "condensed", "responsive"))
+
+rescare_table %>%
+  download_this(
+    output_name = "big ask data download",
+    output_extension = ".xlsx",
+    button_label = "Download data as xlsx",
+    button_type = "default",
+    has_icon = TRUE,
+    icon = "fa fa-save"
+  )
+
+```
 <br/>
 
 ### Children with a social worker only
